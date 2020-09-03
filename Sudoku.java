@@ -28,41 +28,53 @@ public class Sudoku{
 
 		return -1;				
 	}
-	public int fillBoard(int row, int col, int num){
-		
-		//for(int i=1; i<10; i++){}
-		//int num = 1;
-		puzzle[row][col]= num;
-		if(checkRow(row, col, num))
+	public int fillBoard(int row, int col, int pos){
+		puzzle[row][col] = pos;
+		if(!checkRow(row, col))
 			//|| checkCol(row, col, num) || checkGrid(row, col, num))
-			return num;
+			return fillBoard(row, col, pos+1);
 
-		
 
 		return -1;
 		//fillBoard();
 	}
 	public int fillBoard(){
-		//base case: empty space ->fill in 1-9 
-		int row = 0;
-		while(puzzle.emptyspace(row) != -1){
-			for(int num=1; num<10; num++){
-				int col = puzzle.emptyspace(row);
-				//puzzle[row][board.fillBoard(row, col, num)];
-				puzzle.fillBoard(row, col, num);
-			}
-			
-			row++;
+		//base case: empty space ->fill in 1-9
+		//return fillBoard(int[][] puzzle, int row, int col, int num);
+		int num = 1;
+		int col;
+		for(int row =0; row<puzzle.length; row++){
+			col = puzzle.emptyspace(row);
+			return fillBoard(row,col,num);
 		}
+		//when puzzle is complete it will just need to return back to main function
+		return -1;
+	// 	int row = 0;
+	// 	while(puzzle.emptyspace(row) != -1){
+	// 		for(int num=1; num<10; num++){
+	// 			int col = puzzle.emptyspace(row);
+	// 			//puzzle[row][board.fillBoard(row, col, num)];
+	// 			puzzle.fillBoard(row, col, num);
+	// 		}
+	// 		row++;
+	// 	}
 	}
 
-	public boolean checkRow(int row, int col, int pos){
-		for(int i=0; i< puzzle.length; i++)
-			if(puzzle[row][col] == pos)
-				return true;
-		return false;
+	public boolean checkRow(int row, int col){
+		// puzzle[row][col] != puzzle[i][col]
+		/*the nested if statements checks to see if the value at the index
+		matches the value of another index within the row. It double checks
+		if the match is the index itself before returning a boolean. */
+		for(int i=0; i< puzzle.length; i++){
+			if(puzzle[row][col]==puzzle[i][col]){
+				if(row!=i)
+					return false;
+			}	
+		}
+		return true;
 	}
-
+	//public boolean checkCol(int row, int col, int pos){}
+	//public boolean checkGrid(int row, int col, int pos){}
 
 	public String toString(){
 		String output = " ";
@@ -80,7 +92,7 @@ public class Sudoku{
 		Sudoku board = new Sudoku();
 		System.out.println(board);
 		
-		board.fillboard(); //no args, second fillboard(args) called within first
+		board.fillBoard(); //no args, second fillboard(args) called within first
 		System.out.println(board);
 		
 		System.out.println("end.");
