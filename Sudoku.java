@@ -18,19 +18,14 @@ public class Sudoku{
 				puzzle[i][j] = fill.nextInt();
 			}
 	}
-	//length function needed so inside main function can return array length
-	public int length(){
-		return puzzle.length;
-	}
 	
-	//Function will return if there's an empty space & returns when at the first case its tru
-	//Need to change to return the location of the open space
+	//emptyspace() functionality checks for an empty space within a specific row
+	//it will return the index of first empty space
 	public int emptyspace(int row){
-		//for(int i=0; i<puzzle.length; i++)
 		for(int j=0; j<puzzle.length; j++)
 			if(puzzle[row][j] == EMPTY)
 				return j;
-			
+
 		return -1;				
 	}
 	public int fillBoard(int row, int col, int num){
@@ -48,16 +43,13 @@ public class Sudoku{
 		//fillBoard();
 	}
 	public int fillBoard(){
-		//new functions
-		//base case: empty space ->fill in 1-9
+		//base case: empty space ->fill in 1-9 
 		int row = 0;
-		// int col = board.emptyspace(row);
-		// System.out.println(col);
-		while(board.emptyspace(row) != -1){
+		while(puzzle.emptyspace(row) != -1){
 			for(int num=1; num<10; num++){
-				int col = board.emptyspace(row);
+				int col = puzzle.emptyspace(row);
 				//puzzle[row][board.fillBoard(row, col, num)];
-				board.fillBoard(row, col, num);
+				puzzle.fillBoard(row, col, num);
 			}
 			
 			row++;
@@ -88,7 +80,7 @@ public class Sudoku{
 		Sudoku board = new Sudoku();
 		System.out.println(board);
 		
-		board.fillboard(); //no args
+		board.fillboard(); //no args, second fillboard(args) called within first
 		System.out.println(board);
 		
 		System.out.println("end.");
