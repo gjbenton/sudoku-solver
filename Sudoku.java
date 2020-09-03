@@ -21,43 +21,40 @@ public class Sudoku{
 	
 	//emptyspace() functionality checks for an empty space within a specific row
 	//it will return the index of first empty space
-	public int emptyspace(int row){
-		for(int j=0; j<puzzle.length; j++)
-			if(puzzle[row][j] == EMPTY)
-				return j;
+	// public int emptyspace(int row){
+	// 	for(int j=0; j<puzzle.length; j++)
+	// 		if(puzzle[row][j] == EMPTY)
+	// 			return j;
 
-		return -1;				
-	}
-	public int fillBoard(int row, int col, int pos){
-		puzzle[row][col] = pos;
-		if(!checkRow(row, col))
+	// 	return -1;				
+	// }
+	public int fillBoard(int[][] puzzle, int row, int col){
+		int num=1;
+		boolean invalid = true;
+		/*hoping that by making the while a boolean I can control both
+		when num increases (1-9) and when to break the loop*/
+		while(invalid)
+		{
+			puzzle[row][col] = num;
+			if(!checkRow(row, col))
+				num++;
+			invalid = false;
+		}
 			//|| checkCol(row, col, num) || checkGrid(row, col, num))
-			return fillBoard(row, col, pos+1);
-
+			//return fillBoard(row, col, pos+1);
 
 		return -1;
 		//fillBoard();
 	}
 	public int fillBoard(){
-		//base case: empty space ->fill in 1-9
-		//return fillBoard(int[][] puzzle, int row, int col, int num);
-		int num = 1;
-		int col;
-		for(int row =0; row<puzzle.length; row++){
-			col = puzzle.emptyspace(row);
-			return fillBoard(row,col,num);
-		}
+		//finds empty space, calls fill board.
+		for(int row = 0; row<puzzle.length; row++)
+			for(int col = 0; col<puzzle.length; col++){
+				if(puzzle[row][col] == EMPTY)
+					return fillBoard(puzzle, row, col);
+			}
 		//when puzzle is complete it will just need to return back to main function
 		return -1;
-	// 	int row = 0;
-	// 	while(puzzle.emptyspace(row) != -1){
-	// 		for(int num=1; num<10; num++){
-	// 			int col = puzzle.emptyspace(row);
-	// 			//puzzle[row][board.fillBoard(row, col, num)];
-	// 			puzzle.fillBoard(row, col, num);
-	// 		}
-	// 		row++;
-	// 	}
 	}
 
 	public boolean checkRow(int row, int col){
@@ -94,7 +91,8 @@ public class Sudoku{
 		
 		board.fillBoard(); //no args, second fillboard(args) called within first
 		System.out.println(board);
-		
+
+		//System.out.println(board.emptyspace(0));
 		System.out.println("end.");
 	}	
 }
