@@ -9,76 +9,81 @@ public class Sudoku{
 
 	public Sudoku(){
 		Scanner fill = new Scanner(System.in); // allow user to fill in solved solutions
-		puzzle = new int[2][2]; //declares the 9x9 array 
+		//puzzle = new int[9][9]; //declares the 9x9 array 
+		puzzle = {{3, 0, 6, 5, 0, 8, 4, 0, 0},{5, 2, 0, 0, 0, 0, 0, 0, 0},{0, 8, 7, 0, 0, 0, 0, 3, 1}, {0, 0, 3, 0, 1, 0, 0, 8, 0}, {9, 0, 0, 8, 6, 3, 0, 0, 5},{0, 5, 0, 0, 9, 0, 6, 0, 0}, {1, 3, 0, 0, 0, 0, 2, 5, 0}, {0, 0, 0, 0, 0, 0, 0, 7, 4}, {0, 0, 5, 2, 0, 6, 3, 0, 0} };
 
-		for (int i=0; i<puzzle.length;i++)
-			for(int j=0; j<puzzle.length; j++){
-				System.out.println("Enter value for [" +
-					i +"]["+ j +"]. If solution is blank enter '0'");
-				puzzle[i][j] = fill.nextInt();
-			}
+		// for (int i=0; i<puzzle.length;i++)
+		// 	for(int j=0; j<puzzle.length; j++){
+		// 		System.out.println("Enter value for [" +
+		// 			i +"]["+ j +"]. If solution is blank enter '0'");
+		// 		puzzle[i][j] = fill.nextInt();
+			//}
 	}
-	
-	//emptyspace() functionality checks for an empty space within a specific row
-	//it will return the index of first empty space
-	// public int emptyspace(int row){
-	// 	for(int j=0; j<puzzle.length; j++)
-	// 		if(puzzle[row][j] == EMPTY)
-	// 			return j;
 
-	// 	return -1;				
-	// }
-	public int fillBoard(int[][] puzzle, int row, int col){
-		int num=1;
-		boolean invalid = true;
-		/*hoping that by making the while a boolean I can control both
-		when num increases (1-9) and when to break the loop*/
-		while(invalid)
-		{
-			puzzle[row][col] = num;
-			if(!checkRow(row, col))
-				num++;
-			invalid = false;
-		}
-			//|| checkCol(row, col, num) || checkGrid(row, col, num))
-			//return fillBoard(row, col, pos+1);
-
-		return -1;
-		//fillBoard();
-	}
-	public int fillBoard(){
-		//finds empty space, calls fill board.
+	public boolean fillBoard(){
+		//finds empty space
 		for(int row = 0; row<puzzle.length; row++)
 			for(int col = 0; col<puzzle.length; col++){
-				if(puzzle[row][col] == EMPTY)
-					return fillBoard(puzzle, row, col);
+				if(puzzle[row][col] == EMPTY){
+					//now itereates through 1-9
+					for(int num = 1; num <= SIZE; num++){
+						//validates num
+						if(checkRow(row, num) && checkCol(col, num) && checkGrid(row, col, num)){
+							puzzle[row][col]= num;
+							if (fillBoard())
+								return true;
+							else 
+								puzzle[row][col] = EMPTY;
+						}
+					}
+					return false;
+				}
 			}
-		//when puzzle is complete it will just need to return back to main function
-		return -1;
+		return true;
 	}
 
-	public boolean checkRow(int row, int col){
-		// puzzle[row][col] != puzzle[i][col]
-		/*the nested if statements checks to see if the value at the index
-		matches the value of another index within the row. It double checks
-		if the match is the index itself before returning a boolean. */
+	public boolean checkRow(int row, int validate){
 		for(int i=0; i< puzzle.length; i++){
-			if(puzzle[row][col]==puzzle[i][col]){
-				if(row!=i)
+			if(puzzle[row][i]== validate){
 					return false;
 			}	
 		}
 		return true;
 	}
-	//public boolean checkCol(int row, int col, int pos){}
-	//public boolean checkGrid(int row, int col, int pos){}
+	public boolean checkCol(int col, int validate){
+		for(int i=0; i<puzzle.length; i++){
+			if(puzzle[i][col]==validate){
+				return false;
+			}
+		}
+		return true;
+	}
+	public boolean checkGrid(int row, int col, int validate){
+		int gridRow = col/3;
+		int gridCol = row/3;
+
+		//This iterative loop allows i to be 0/3/6 depending on gridRow
+		for(int i=gridRow*3; i<(gridRow*3)+3; i++){
+			for(int j= gridCol*3; j<(gridCol*3)+3;j++)
+				if(puzzle[i][j]==validate)
+					return false;
+		}
+		return true;
+
+	}
 
 	public String toString(){
 		String output = " ";
 		for(int row =0; row<puzzle.length; row++){
 			output += "\n";
-			for(int col = 0; col<puzzle[row].length; col++)
-				output+= puzzle[row][col] + "\t";
+			if(row%3==0)
+				output += "-----------------------------------------------\n";
+			for(int col = 0; col<puzzle[row].length; col++){
+				if(col%3==0)
+					output += "| ";
+				output+= puzzle[row][col] + "\t";	
+			}
+
 		}
 		return output;	
 	}
@@ -89,10 +94,11 @@ public class Sudoku{
 		Sudoku board = new Sudoku();
 		System.out.println(board);
 		
-		board.fillBoard(); //no args, second fillboard(args) called within first
+		board.fillBoard();
 		System.out.println(board);
 
 		//System.out.println(board.emptyspace(0));
 		System.out.println("end.");
+
 	}	
 }
