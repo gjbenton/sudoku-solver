@@ -3,30 +3,31 @@ solution spaces on an existing sudoku board.
 */
 import java.util.Scanner;
 public class Sudoku{
-	private int[][] puzzle = {
-		{3, 0, 6, 5, 0, 8, 4, 0, 0},
-		{5, 2, 0, 0, 0, 0, 0, 0, 0},
-		{0, 8, 7, 0, 0, 0, 0, 3, 1},
-		{0, 0, 3, 0, 1, 0, 0, 8, 0}, 
-		{9, 0, 0, 8, 6, 3, 0, 0, 5},
-		{0, 5, 0, 0, 9, 0, 6, 0, 0}, 
-		{1, 3, 0, 0, 0, 0, 2, 5, 0}, 
-		{0, 0, 0, 0, 0, 0, 0, 7, 4}, 
-		{0, 0, 5, 2, 0, 6, 3, 0, 0} };
-; 
+	private int[][] puzzle;
+	// private int[][] puzzle = {
+	// 	{3, 0, 6, 5, 0, 8, 4, 0, 0},
+	// 	{5, 2, 0, 0, 0, 0, 0, 0, 0},
+	// 	{0, 8, 7, 0, 0, 0, 0, 3, 1},
+	// 	{0, 0, 3, 0, 1, 0, 0, 8, 0}, 
+	// 	{9, 0, 0, 8, 6, 3, 0, 0, 5},
+	// 	{0, 5, 0, 0, 9, 0, 6, 0, 0}, 
+	// 	{1, 3, 0, 0, 0, 0, 2, 5, 0}, 
+	// 	{0, 0, 0, 0, 0, 0, 0, 7, 4}, 
+	// 	{0, 0, 5, 2, 0, 6, 3, 0, 0} };
+
 	private final int EMPTY = 0;
 	private final int SIZE = 9;
 
 	public Sudoku(){
-		// Scanner fill = new Scanner(System.in); // allow user to fill in solved solutions
-		// puzzle = new int[9][9]; //declares the 9x9 array 
+		Scanner fill = new Scanner(System.in); // allow user to fill in solved solutions
+		puzzle = new int[SIZE][SIZE]; //declares the 9x9 array 
 
-		// for (int i=0; i<puzzle.length;i++)
-		// 	for(int j=0; j<puzzle.length; j++){
-		// 		System.out.println("Enter value for [" +
-		// 			i +"]["+ j +"]. If solution is blank enter '0'");
-		// 		puzzle[i][j] = fill.nextInt();
-		// }
+		for (int i=0; i<puzzle.length;i++)
+			for(int j=0; j<puzzle.length; j++){
+				System.out.println("Enter value for [" +
+					i +"]["+ j +"]. If solution is blank enter '0'");
+				puzzle[i][j] = fill.nextInt();
+		}
 	}
 	public boolean fillBoard(){
 		//finds empty space
